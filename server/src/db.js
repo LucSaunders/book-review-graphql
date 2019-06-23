@@ -8,10 +8,21 @@ const pool = new Pool({
   database: 'sherpabook'
 });
 
+// Add logging to follow sql statements, parameters
+function logQuery(sql, params) {
+  console.log('Begin-----------------');
+  console.log('SQL:', sql);
+  console.log('PARAMS:', JSON.stringify(params));
+  console.log('End-------------------');
+}
+
 // Create function to execute all sql statements
 async function query(sql, params) {
   // Grab database connection from the existing database pool
   const client = await pool.connect();
+
+  //   Insert logQuery function (optimization test)
+  logQuery(sql, params);
 
   try {
     const result = await client.query(sql, params);
