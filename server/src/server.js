@@ -4,23 +4,8 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import { makeExecutableSchema } from 'graphql-tools';
 import { graphql } from 'graphql';
-
-const typeDefs = `
-schema {
-  query: Query
-}
-type Query {
-  hello: String
-  name: String
-}
-`;
-
-const resolvers = {
-  Query: {
-    hello: () => 'World',
-    name: () => 'Luc'
-  }
-};
+import typeDefs from './typedefs';
+import resolvers from './resolvers';
 
 const schema = makeExecutableSchema({ typeDefs, resolvers });
 
