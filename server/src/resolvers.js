@@ -2,9 +2,7 @@ import { allBooks } from './book';
 
 const resolvers = {
   Book: {
-    title: book => {
-      return `${book.title} (from resolver)`;
-    }
+    // ratingCount: book => book.rating_count
   },
   Query: {
     books: () => {

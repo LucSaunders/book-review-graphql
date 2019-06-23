@@ -12,6 +12,8 @@ type Book {
     description: String!
     imageUrl: String!
     rating: Float
+    subtitle: String
+    ratingCount: Int
 }
 `;
 export default typeDefs;

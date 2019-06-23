@@ -1,15 +1,13 @@
 // Create book file to use as data-access layer
-const books = [
-  {
-    id: 1,
-    title: 'some book title',
-    description: 'some book description',
-    imageUrl: 'img.png',
-    rating: 5
-  }
-];
+import query from './db';
 
-export function allBooks() {
-  // TODO: Query books from db
-  return books;
+export async function allBooks() {
+  const sql = `select * from sb.book`;
+  try {
+    const result = await query(sql);
+    return result.rows;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
 }
