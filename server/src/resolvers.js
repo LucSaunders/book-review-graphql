@@ -1,9 +1,11 @@
 import { allBooks, imageUrl } from './book';
+import { authorByBookId } from './author';
 
 const resolvers = {
   Book: {
     // ratingCount: book => book.rating_count
-    imageUrl: (book, { size }) => imageUrl(size, book.googleId)
+    imageUrl: (book, { size }) => imageUrl(size, book.googleId),
+    authors: book => authorsByBookId(book.id)
   },
   Query: {
     books: () => {
