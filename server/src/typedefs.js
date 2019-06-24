@@ -26,6 +26,7 @@ type Review {
     rating: Int
     title: String
     comment: String
+    book: Book
 }
 enum ImageSize {
     SMALL

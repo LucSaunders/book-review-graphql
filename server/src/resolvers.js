@@ -1,4 +1,4 @@
-import { allBooks, imageUrl } from './book';
+import { allBooks, imageUrl, findBookById } from './book';
 import { authorsByBookId } from './author';
 import { allReviews } from './review';
 
@@ -16,6 +16,14 @@ const resolvers = {
       // Resolvers can return promises
       return findAuthorsByBookIdsLoader.load(book.id);
       //  authorsByBookId(book.id)
+    }
+  },
+  Review: {
+    book: (review, args, context) => {
+      // findBookById(review.bookId)
+      const { loaders } = context;
+      const { findBooksByIdsLoader } = loaders;
+      return findBooksByIdsLoader.load(review.bookId);
     }
   },
   Query: {
