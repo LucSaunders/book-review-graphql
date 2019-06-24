@@ -1,5 +1,6 @@
 import { allBooks, imageUrl } from './book';
 import { authorsByBookId } from './author';
+import { allReviews } from './review';
 
 const resolvers = {
   Book: {
@@ -21,7 +22,8 @@ const resolvers = {
     books: () => {
       // To keep Graphql layer thin, have resolvers call business-logic layer or data-access layer.
       return allBooks();
-    }
+    },
+    reviews: () => allReviews()
   }
 };
 
