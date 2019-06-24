@@ -1,7 +1,9 @@
-import { findAuthorsByBookIdsLoader } from './author';
 import { findBooksByIdsLoader } from './book';
+import { findAuthorsByBookIdsLoader } from './author';
+import { findUsersByIdsLoader } from './user';
 
 export default () => ({
+  findBooksByIdsLoader: findBooksByIdsLoader(),
   findAuthorsByBookIdsLoader: findAuthorsByBookIdsLoader(),
-  findBooksByIdsLoader: findBooksByIdsLoader()
+  findUsersByIdsLoader: findUsersByIdsLoader()
 });

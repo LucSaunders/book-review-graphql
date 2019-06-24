@@ -19,7 +19,7 @@ type Book {
 }
 type Author {
     id: ID!
-    name: String!
+    name: String
 }
 type Review {
     id: ID!
@@ -27,6 +27,11 @@ type Review {
     title: String
     comment: String
     book: Book
+    user: User
+}
+type User {
+  id: ID!
+  name: String  
 }
 enum ImageSize {
     SMALL

@@ -24,9 +24,9 @@ export async function findAuthorsByBookIds(ids) {
     const rowsById = groupBy(author => author.bookId, result.rows);
     // Call Ramda's map function: pass 1) transformation function, 2) the array to act on (ids)
     return map(id => rowsById[id], ids);
-  } catch (err) {
-    console.log(err);
-    throw err;
+  } catch (error) {
+    console.log(error);
+    throw error;
   }
 }
 
@@ -47,8 +47,8 @@ export async function authorsByBookId(id) {
   try {
     const result = await query(sql, params);
     return result.rows;
-  } catch (err) {
-    console.log(err);
-    throw err;
+  } catch (error) {
+    console.log(error);
+    throw error;
   }
 }
