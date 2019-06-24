@@ -35,9 +35,9 @@ create index book_tokens_idx on sb.book using gin(tokens);
 
 comment on table sb.book is 'A book.';
 comment on column sb.book.id is 'The primary unique identifier for the book.';
-comment on column sb.book.title is 'The books title.';
-comment on column sb.book.subtitle is 'The books subtitle.';
-comment on column sb.book.description is 'The books description.';
+comment on column sb.book.title is 'The book title.';
+comment on column sb.book.subtitle is 'The book subtitle.';
+comment on column sb.book.description is 'The book description.';
 comment on column sb.book.page_count is 'The number of pages in the book.';
 comment on column sb.book.rating_total is 'The total number of all the user reviews for the book. ie user1: 4 star, user2: 5 star, user3: 3 star => review_total = 12 (4 + 5 + 3)';
 comment on column sb.book.rating_count is 'The count of all the user reviews for the book. ie user1: 4 star, user2: 5 star, user3: 3 star => review_count = 3';

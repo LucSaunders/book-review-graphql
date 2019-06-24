@@ -7,21 +7,21 @@ insert into sb.author(id, name) values
   (2, 'Peter Thiel'),
   (3, 'Blake Masters');
 
--- update tokens column for full text search
+-- Update tokens column for full text search.
 update sb.author set tokens = to_tsvector(name);
 
--- reset next sequence used for id column.  Next id should be 4
--- since 1, 2 & 3 were used above
+-- Reset next sequence used for id column.  Next id should be 4.
+-- Since 1, 2 & 3 were used above.
 alter sequence sb.author_id_seq restart with 4;
 
 insert into sb.book(id, google_id, title, subtitle, description, page_count, rating_total, rating_count, rating ) values
   (1, 'POOJDQAAQBAJ', 'Zero to One', 'Notes on Startups, Or how to Build the Future', 'The billionaire Silicon Valley entrepreneur behind such companies as PayPal and Facebook outlines an innovative theory and formula for building the companies of the future by creating and monopolizing new markets instead of competing in old ones. 200,000 first printing.', 210, 15, 3, 15.0/3.0),
   (2, '9ZNHCElMv9EC', 'Design for hackers', 'Reverse Engineering Beauty', 'Looks at classical design principles and techniques for Web designers using a "reverse-engineering" process, with information on such topics as color, proportion, white space, composition, and typographic etiquette.', 338, 13, 3, 13.0/3.0 );
 
--- update tokens column for full text search
+-- Update tokens column for full text search.
 update sb.book set tokens = to_tsvector(coalesce(title, '') || coalesce(subtitle, '') || coalesce(description, ''));
 
--- reset next sequence used for id column.
+-- Reset next sequence used for id column.
 alter sequence sb.book_id_seq restart with 3;
 
 insert into sb.book_author(id, book_id, author_id) values
@@ -29,7 +29,7 @@ insert into sb.book_author(id, book_id, author_id) values
   (2, 1, 3),
   (3, 2, 1);
 
--- reset next sequence used for id column.
+-- Reset next sequence used for id column.
 alter sequence sb.book_author_id_seq restart with 4;
 
 insert into sb.user(id, email, name) values 
@@ -37,10 +37,10 @@ insert into sb.user(id, email, name) values
   (2, 'joe@mail.com', 'joe'),
   (3, 'jane@mail.com', 'jane');
 
--- update tokens column for full text search
+-- Update tokens column for full text search.
 update sb.user set tokens = to_tsvector(name);
 
--- reset next sequence used for id column.
+-- Reset next sequence used for id column.
 alter sequence sb.user_id_seq restart with 4;
 
 insert into sb.review(id, user_id, book_id, rating, title, comment) values 
@@ -51,10 +51,10 @@ insert into sb.review(id, user_id, book_id, rating, title, comment) values
   (5, 2, 1, 5, 'words for how I feel', 'Have you ever read an article or book that defined something that you’ve abstractly believed for years? When you read it you let out an affirmative mental “aha!”. I had one of these moments recently when I read Zero to One by Peter Thiel. This book helped shape and better define my investment strategy.'),
   (6, 3, 1, 5, 'Must Read', 'A must-read for any entrepreneur who wants to make a difference.');
 
--- update tokens column for full text search
+-- Update tokens column for full text search.
 update sb.review set tokens = to_tsvector(coalesce(title, '') || coalesce(comment, ''));
 
--- reset next sequence used for id column.
+-- Reset next sequence used for id column.
 alter sequence sb.review_id_seq restart with 7;
 
 commit;
