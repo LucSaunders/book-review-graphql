@@ -43,9 +43,18 @@ export async function findBookById(id) {
     throw error;
   }
 }
+// Create variable at module level to be used for book sort
+const ORDER_BY = {
+  ID_DESC: 'id desc',
+  RATING_DESC: 'rating desc'
+};
 
-export async function allBooks() {
-  const sql = `select * from sb.book`;
+export async function allBooks(args) {
+  const orderBy = ORDER_BY[args.orderBy];
+  const sql = `
+  select * from sb.book
+  order by ${orderBy}
+  `;
   try {
     const result = await query(sql);
     return result.rows;

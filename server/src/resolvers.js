@@ -32,9 +32,9 @@ const resolvers = {
     }
   },
   Query: {
-    books: () => {
+    books: (root, args) => {
       // To keep Graphql layer thin, have resolvers call business-logic layer or data-access layer.
-      return allBooks();
+      return allBooks(args);
     },
     reviews: () => allReviews()
   }
