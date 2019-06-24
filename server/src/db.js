@@ -32,7 +32,7 @@ async function query(sql, params) {
     console.log(error);
   } finally {
     // Put database connection back into the pool so it can be used again
-    client.release;
+    client.release();
   }
 }
 // Using query rather than pool ensures database connection pool won't be drained

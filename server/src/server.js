@@ -6,6 +6,7 @@ import { makeExecutableSchema } from 'graphql-tools';
 import { graphql } from 'graphql';
 import typeDefs from './typedefs';
 import resolvers from './resolvers';
+import loaders from './loader';
 
 const schema = makeExecutableSchema({ typeDefs, resolvers });
 
@@ -20,7 +21,13 @@ app.use(
   '/graphql',
   bodyParser.json(),
   // Schema must be passed into graphqlExpress
-  graphqlExpress({ schema })
+  // Also pass in context property (DataLoader)
+  graphqlExpress(() => ({
+    schema,
+    context: {
+      loaders: loaders()
+    }
+  }))
 );
 
 // Set up graphiql
