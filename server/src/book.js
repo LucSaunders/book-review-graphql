@@ -28,6 +28,7 @@ async function findBooksByIds(ids) {
 export function findBooksByIdsLoader() {
   return new DataLoader(findBooksByIds);
 }
+
 export async function findBookById(id) {
   const sql = `
   select * 
@@ -43,7 +44,8 @@ export async function findBookById(id) {
     throw error;
   }
 }
-// Create variable at module level to be used for book sort
+
+// Create variable at module level to be used for book sort in allBooks()
 const ORDER_BY = {
   ID_DESC: 'id desc',
   RATING_DESC: 'rating desc'
