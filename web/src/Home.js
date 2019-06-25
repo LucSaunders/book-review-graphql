@@ -78,8 +78,8 @@ class Home extends Component {
         reviews,
         errors
       });
-    } catch (err) {
-      this.setState({ errors: [err.message] });
+    } catch (error) {
+      this.setState({ errors: [error.message] });
     }
   }
   handleOrderBy = async orderBy => {

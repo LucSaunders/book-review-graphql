@@ -46,7 +46,7 @@ const resolvers = {
       return allBooks(args);
     },
     reviews: (root, args) => {
-      allReviews(args);
+      return allReviews(args);
     },
     book: (root, args, context) => {
       // Use existant findBooksByIdsLoader in Review's book property (caches the query)
