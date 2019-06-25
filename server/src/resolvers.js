@@ -36,7 +36,15 @@ const resolvers = {
       // To keep Graphql layer thin, have resolvers call business-logic layer or data-access layer.
       return allBooks(args);
     },
-    reviews: (root, args) => allReviews(args)
+    reviews: (root, args) => {
+      allReviews(args);
+    },
+    book: (root, args, context) => {
+      // Use existant findBooksByIdsLoader in Review's book property (caches the query)
+      const { loaders } = context;
+      const { findBooksByIdsLoader } = loaders;
+      return findBooksByIdsLoader.load(args.id);
+    }
   }
 };
 

@@ -6,6 +6,7 @@ schema {
 type Query {
     books(orderBy: BooksOrderBy = RATING_DESC): [Book]
     reviews(orderBy: ReviewsOrderBy = ID_DESC): [Review]
+    book(id: ID!): Book
 }
 enum BooksOrderBy {
     RATING_DESC
