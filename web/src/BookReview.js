@@ -5,8 +5,27 @@ import * as EmailValidator from 'email-validator';
 import { Book, BookReviewForm } from './components/Book';
 import Error from './components/Error';
 import data from './data';
+import fetch from './fetch';
 
 const findBookById = (id, books) => R.find(R.propEq('id', id), books);
+
+const query = `
+fragment Book on Book {
+  id
+  title
+  description
+  imageUrl
+  rating
+}
+query Book($id: ID!) {
+  book(id: $id){
+    ...Book
+    authors {
+      name
+    }
+  }
+}
+`;
 
 const isInputValid = reviewInput => {
   const { count, name, email } = reviewInput;
@@ -22,18 +41,23 @@ class BookReview extends Component {
       name: '',
       email: '',
       title: '',
-      comment: '',
+      comment: ''
     },
     redirect: false,
     inputValid: false,
-    errors: [],
+    errors: []
   };
   async componentDidMount() {
     const id = R.path(['props', 'match', 'params', 'id'], this);
     try {
       // TODO: fetch actual book using graphql
-      const book = findBookById(id, data.books);
-      const errors = [];
+      const variables = { id };
+      const result = await fetch({ query, variables });
+      // const book = findBookById(id, data.books);
+      const book = R.path(['data', 'book'], result);
+      const errorList = R.pathOr([], ['errors'], result);
+      // const errors = [];
+      const errors = R.map(error => error.message, errorList);
       this.setState({ book, errors });
     } catch (err) {
       this.setState({ errors: [err.message] });
@@ -61,10 +85,10 @@ class BookReview extends Component {
     const { book, reviewInput, inputValid, redirect } = this.state;
     if (!book) return null;
     return (
-      <div className="cf black-80 mv2">
+      <div className='cf black-80 mv2'>
         {redirect && <Redirect to={`/book/${book.id}`} />}
         <Error errors={this.state.errors} />
-        <h1 className="fw4 mt2 mb3 f2">Review</h1>
+        <h1 className='fw4 mt2 mb3 f2'>Review</h1>
         <Book book={book} />
         <BookReviewForm
           book={book}
