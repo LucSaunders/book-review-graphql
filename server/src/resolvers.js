@@ -3,6 +3,10 @@ import { authorsByBookId } from './author';
 import { allReviews } from './review';
 
 const resolvers = {
+  User: {
+    //  Use gravatar for user photos
+    imageUrl: (user, args) => gravatar.url(user.email, { s: args.size })
+  },
   Book: {
     // ratingCount: book => book.rating_count
     imageUrl: (book, { size }) => imageUrl(size, book.googleId),
@@ -16,6 +20,11 @@ const resolvers = {
       // Resolvers can return promises
       return findAuthorsByBookIdsLoader.load(book.id);
       //  authorsByBookId(book.id)
+    },
+    reviews: (book, args, context) => {
+      const { loaders } = context;
+      const { findReviewsByBookIdsLoader } = loaders;
+      return findReviewsByBookIdsLoader.load(book.id);
     }
   },
   Review: {
