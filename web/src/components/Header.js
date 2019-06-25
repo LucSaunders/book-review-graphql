@@ -24,7 +24,7 @@ const Header = props => {
         </a>
         <h1 className='mt1 mb2 mb0 baskerville i fw1 f2'>Sherpa Book Review</h1>
         <h2 className='mt1 mb2 mb0 f6 fw4 ttu tracked'>
-          A companion for heavy-lifting readers
+          A companion for adventurous, heavy-lifting readers
         </h2>
       </div>
       <Nav {...props} />
