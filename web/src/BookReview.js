@@ -27,6 +27,14 @@ query Book($id: ID!) {
 }
 `;
 
+const createReviewMutation = `
+mutation CreateReview($reviewInput: ReviewInput!) {
+  createReview(reviewInput: $reviewInput) {
+    id
+  }
+}
+`;
+
 const isInputValid = reviewInput => {
   const { count, name, email } = reviewInput;
   return count > 0 && count < 6 && name && EmailValidator.validate(email);
@@ -77,9 +85,25 @@ class BookReview extends Component {
     const { name, count, email, title, comment } = reviewInput;
     // TODO: add actual mutation to add new review
     try {
-      const errors = [];
-      this.setState({ redirect: true, errors });
-    } catch (err) {}
+      const variables = {
+        reviewInput: {
+          bookId: book.id,
+          rating: count,
+          name,
+          email,
+          title,
+          comment
+        }
+      };
+      const result = await fetch({ query: createReviewMutation, variables });
+      const id = R.path(['data', 'createReview', 'id'], result);
+      const errorList = R.pathOr([], ['errors'], result);
+      const errors = R.map(error => error.message, errorList);
+      const redirect = !!id;
+      this.setState({ redirect, errors });
+    } catch (err) {
+      this.setState({ errors: [err.message] });
+    }
   };
   render() {
     const { book, reviewInput, inputValid, redirect } = this.state;
