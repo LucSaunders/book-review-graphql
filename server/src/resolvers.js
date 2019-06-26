@@ -1,5 +1,5 @@
 import gravatar from 'gravatar';
-import { allBooks, imageUrl, findBookById } from './book';
+import { allBooks, imageUrl, findBookById, searchBook } from './book';
 import { authorsByBookId } from './author';
 import { allReviews, createReview } from './review';
 
@@ -54,7 +54,14 @@ const resolvers = {
       const { loaders } = context;
       const { findBooksByIdsLoader } = loaders;
       return findBooksByIdsLoader.load(args.id);
+    },
+    searchBook: (root, args) => {
+      const { query } = args;
+      return searchBook(query);
     }
+  },
+  SearchBookResult: {
+    imageUrl: (result, args) => imageUrl(args.size, result.id)
   },
   Mutation: {
     createReview: (root, args) => {

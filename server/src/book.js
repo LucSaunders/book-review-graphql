@@ -1,7 +1,23 @@
 // Create book file to use as data-access layer
-import { map, groupBy } from 'ramda';
+import { groupBy, map, pathOr } from 'ramda';
 import DataLoader from 'dataloader';
+import axios from 'axios';
 import query from './db';
+
+export async function searchBook(query) {
+  const url = `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(
+    query
+  )}`;
+  try {
+    const result = await axios(url);
+    const items = pathOr([], ['data', 'items'], result);
+    const books = map(book => ({ id: book.id, ...book.volumeInfo }), items);
+    return books;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
 
 async function findBooksByIds(ids) {
   const sql = `
