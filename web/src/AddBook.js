@@ -1,15 +1,31 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
+import { pathOr, map } from 'ramda';
 import { BookSearchForm, BookSearchResults } from './components/Book';
 import Error from './components/Error';
+import fetch from './fetch';
 import data from './data';
 
+const query = `
+fragment SearchBook on SearchBookResult {
+  id
+  title
+  description
+  authors
+  imageUrl
+}
+query SearchBook($query: String!) {
+  searchBook(query: $query) {
+    ...SearchBook
+  }
+}
+`;
 class AddBook extends Component {
   state = {
     term: '',
     results: [],
     redirectBookId: null,
-    errors: [],
+    errors: []
   };
   handleChange = (field, value) => {
     this.setState({ [field]: value });
@@ -20,8 +36,13 @@ class AddBook extends Component {
     const { term } = this.state;
     try {
       // TODO: fetch actual search results using graphql
-      const results = data.results;
-      const errors = [];
+      const variables = { query: term };
+      const result = await fetch({ query, variables });
+      // const results = data.results;
+      const results = pathOr([], ['data', 'searchBook'], result);
+      const errorList = pathOr([], ['errors'], result);
+      // const errors = [];
+      const errors = map(error => error.message, errorList);
       this.setState({ results, errors });
     } catch (err) {
       this.setState({ errors: [err.message] });
@@ -40,7 +61,7 @@ class AddBook extends Component {
   render() {
     const { redirectBookId } = this.state;
     return (
-      <div className="cf black-80 mv2">
+      <div className='cf black-80 mv2'>
         {redirectBookId && <Redirect to={`/book/${redirectBookId}`} />}
         <Error errors={this.state.errors} />
         <BookSearchForm
