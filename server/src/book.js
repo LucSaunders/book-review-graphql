@@ -2,6 +2,7 @@
 import { groupBy, map, pathOr } from 'ramda';
 import DataLoader from 'dataloader';
 import axios from 'axios';
+import stripTags from 'striptags';
 import query from './db';
 
 export async function searchBook(query) {
@@ -85,4 +86,47 @@ export async function allBooks(args) {
 export function imageUrl(size, id) {
   const zoom = size === 'SMALL' ? 1 : 0;
   return `//books.google.com/books/content?id=${id}&printsec=frontcover&img=1&zoom=${zoom}&source=gbs_api`;
+}
+
+export async function createBook(googleBookId) {
+  try {
+    const book = await findBookByGoogleId(googleBookId);
+    const {
+      title = '',
+      subtitle = '',
+      description = '',
+      authors = [],
+      pageCount = 0
+    } = book;
+    const sql = `
+select * from sb.create_book($1, $2, $3, $4, $5, $6);
+`;
+    const params = [
+      googleBookId,
+      // Call stripTags function to deal with html markup embedded in google api returns
+      stripTags(title),
+      stripTags(subtitle),
+      stripTags(description),
+      authors,
+      pageCount
+    ];
+    const result = await query(sql, params);
+    return result.rows[0];
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+async function findBookByGoogleId(googleBookId) {
+  const url = `
+    https://www.googleapis.com/books/v1/volumes/${googleBookId}`;
+  try {
+    const result = await axios(url);
+    const book = pathOr({}, ['data'], result);
+    return { ...book, ...book.volumeInfo };
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
 }
