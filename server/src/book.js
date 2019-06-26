@@ -98,11 +98,13 @@ export async function createBook(googleBookId) {
       authors = [],
       pageCount = 0
     } = book;
+    // Call sb.create_book function from schema.sql
     const sql = `
 select * from sb.create_book($1, $2, $3, $4, $5, $6);
 `;
     const params = [
       googleBookId,
+      // Handle edge case of google api not returning a value for each property
       // Call stripTags function to deal with html markup embedded in google api returns
       stripTags(title),
       stripTags(subtitle),
