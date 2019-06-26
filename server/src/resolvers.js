@@ -1,6 +1,7 @@
+import gravatar from 'gravatar';
 import { allBooks, imageUrl, findBookById } from './book';
 import { authorsByBookId } from './author';
-import { allReviews } from './review';
+import { allReviews, createReview } from './review';
 
 const resolvers = {
   User: {
@@ -53,6 +54,12 @@ const resolvers = {
       const { loaders } = context;
       const { findBooksByIdsLoader } = loaders;
       return findBooksByIdsLoader.load(args.id);
+    }
+  },
+  Mutation: {
+    createReview: (root, args) => {
+      const { reviewInput } = args;
+      return createReview(reviewInput);
     }
   }
 };

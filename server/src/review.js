@@ -44,3 +44,20 @@ export async function allReviews(args) {
     throw err;
   }
 }
+
+export async function createReview(reviewInput) {
+  const { bookId, email, name, rating, title, comment } = reviewInput;
+  // Call postgres function sb.create_review, defined in schema.sql (takes 6 parameters)
+  const sql = `
+  select * from sb.create_review($1, $2, $3, $4, $5, $6);
+  `;
+  // Create variable to hold all 6 params
+  const params = [bookId, email, name, rating, title, comment];
+  try {
+    const result = await query(sql, params);
+    return result.rows[0];
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
