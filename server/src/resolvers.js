@@ -8,6 +8,7 @@ import {
 } from './book';
 import { authorsByBookId } from './author';
 import { allReviews, createReview } from './review';
+import { search } from './search';
 
 const resolvers = {
   User: {
@@ -38,7 +39,7 @@ const resolvers = {
     book: (review, args, context) => {
       // findBookById(review.bookId)
       const { loaders } = context;
-      const { findBooksByIdsLoader } = loaders;
+      const { findBookssByIdsLoader } = loaders;
       return findBooksByIdsLoader.load(review.bookId);
     },
     user: (review, args, context) => {
@@ -64,10 +65,17 @@ const resolvers = {
     searchBook: (root, args) => {
       const { query } = args;
       return searchBook(query);
+    },
+    search: (root, args) => {
+      const { query } = args;
+      return search(query);
     }
   },
   SearchBookResult: {
     imageUrl: (result, args) => imageUrl(args.size, result.id)
+  },
+  SearchResult: {
+    __resolveType: obj => obj.__type
   },
   Mutation: {
     createReview: (root, args) => {

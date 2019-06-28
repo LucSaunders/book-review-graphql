@@ -9,6 +9,7 @@ type Query {
     reviews(orderBy: ReviewsOrderBy = ID_DESC): [Review]
     book(id: ID!): Book
     searchBook(query: String!): [SearchBookResult]
+    search(query: String!): [SearchResult]
 }
 type SearchBookResult {
     id: ID!
@@ -69,5 +70,6 @@ enum ImageSize {
     SMALL
     LARGE
 }
+union SearchResult = Book | Review | Author | User 
 `;
 export default typeDefs;
